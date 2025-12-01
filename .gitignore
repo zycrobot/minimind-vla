@@ -1,0 +1,7 @@
+model/__pycache__
+out
+website/
+docs-minimind-v/
+测试.py
+model/vision_model/clip-vit-base-patch16/
+out/
