@@ -4,10 +4,9 @@ A robot embodied intelligence vision-language-action model implemented based on 
 ### The action expert module integrates three continuous action generation algorithms: epsilon-diffusion, v-pred(flow-matching), [x-pred](https://github.com/LTH14/JiT)
 ![robot task](assert/x-pred.png)
 
-## Comparison of Modeling Capabilities of Three Action Prediction Modules
+## 🔍️Comparison of Modeling Capabilities of Three Action Prediction Modules
 
 ### Moons Dataset Comparison
-
 Below are the comparison results of three action prediction algorithms on the Moons dataset:
 
 | $\epsilon$(d=512) | $v$-pred(d=512) | $x$-pred(d=512)  |
@@ -22,22 +21,19 @@ Below are the comparison results of three action prediction algorithms on the Sp
 |-------------------------|-------------------------|-------------------------|
 | ![Epsilon Prediction](assert/spiral_figure2_toy_experiment_D512_epspred.png) | ![v-pred Prediction](assert/spiral_figure2_toy_experiment_D512_vpred.png) | ![x-pred Prediction](assert/spiral_figure2_toy_experiment_D512_xpred.png) |
 
-### Robot Simulation Scenario
+## 🦾Robot Simulation Scenario
 
 ![robot task](assert/simulation.gif)
 
-### minimind-vla Training
 
-![robot task](assert/loss.png)
-
-## File Description
+## 📁File Description
 
 1. **`dataset/vla_dataloader.py`**: VLA dataset loader that loads image, text, and action data from HDF5 files
 2. **`trainer/post_train_vla.py`**: VLA model training script (with frozen vision encoder)
 3. **`scripts/collect_franka_hdf5.py`**: Tool script for creating example HDF5 data files for Franka robot object grasping
 4. **`test_post_train_vla.py`**: Script for testing the training process
 
-## HDF5 Data Format
+### HDF5 Data Format
 
 HDF5 files use an episode-based grouping structure. Each episode group contains the following datasets:
 
@@ -59,13 +55,13 @@ data/
 
 **Note**: According to previous modifications, the data loader now supports loading data from episode groups, and robot state information is required for normal training.
 
-### Creating Example Data
+### 📊Creating Example Data
 
 ```bash
 python scripts\collect_franka_hdf5.py --gui  --episode 10
 ```
 
-## Training the VLA Model
+## 🖥️Training the VLA Model
 
 ### Basic Training Command
 
@@ -76,6 +72,10 @@ modelscope download --model openai-mirror/clip-vit-base-patch16 ----local_dir ./
 ```bash
 python trainer/post_train_vla.py --data_path ./dataset/franka_pick_dataset.hdf5 --epochs 20  --batch_size 64  --learning_rate 1e-3  --action_dim 8 --robot_state_dim 8  --action_chunk_size 100 --use_swanlab  --swanlab_project MiniMind-VLA
 ```
+
+### minimind-vla Training
+
+![robot task](assert/loss.png)
 
 ### Main Parameter Explanation
 
