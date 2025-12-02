@@ -1,6 +1,6 @@
 # 🤖minimind-VLA
 
-A robot embodied intelligence vision-language-action model implemented based on [minimind-v](https://github.com/jingyaogong/minimind-v)
+A robot embodied intelligence [vision-language](https://github.com/jingyaogong/minimind-v)-action model
 ### The action expert module integrates three continuous action generation algorithms: epsilon-diffusion, v-pred(flow-matching), [x-pred](https://github.com/LTH14/JiT)
 ![robot task](assert/x-pred.png)
 
