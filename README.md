@@ -1,74 +1,73 @@
+# 🤖minimind-VLA
 
-# minimind-VLA
-
-基于minimind-v实现的机器人具身智能vision languange action模型
-### action expert 部分集成三种连续动作生成算法：epsilon-diffusion、v-pred(flow-matching)、[x-pred](https://github.com/LTH14/JiT)
+A robot embodied intelligence vision-language-action model implemented based on [minimind-v](https://github.com/jingyaogong/minimind-v)
+### The action expert module integrates three continuous action generation algorithms: epsilon-diffusion, v-pred(flow-matching), [x-pred](https://github.com/LTH14/JiT)
 ![robot task](assert/x-pred.png)
 
-## 三种动作预测模块建模能力对比
+## Comparison of Modeling Capabilities of Three Action Prediction Modules
 
-### Moons 数据集对比
+### Moons Dataset Comparison
 
-以下是在Moons数据集上三种动作预测算法的对比结果：
+Below are the comparison results of three action prediction algorithms on the Moons dataset:
 
 | $\epsilon$(d=512) | $v$-pred(d=512) | $x$-pred(d=512)  |
 |------------------------|-------------------------|-------------------------|
 | ![Epsilon Prediction](assert/moons_figure2_toy_experiment_D512_epspred.png) | ![v-pred Prediction](assert/moons_figure2_toy_experiment_D512_vpred.png) | ![x-pred Prediction](assert/moons_figure2_toy_experiment_D512_xpred.png) |
 
-### Spiral 数据集对比
+### Spiral Dataset Comparison
 
-以下是在Spiral数据集上三种动作预测算法的对比结果：
+Below are the comparison results of three action prediction algorithms on the Spiral dataset:
 
 | $\epsilon$(d=512) | $v$-pred(d=512) | $x$-pred(d=512)  |
 |-------------------------|-------------------------|-------------------------|
 | ![Epsilon Prediction](assert/spiral_figure2_toy_experiment_D512_epspred.png) | ![v-pred Prediction](assert/spiral_figure2_toy_experiment_D512_vpred.png) | ![x-pred Prediction](assert/spiral_figure2_toy_experiment_D512_xpred.png) |
 
-### 机器人仿真场景
+### Robot Simulation Scenario
 
 ![robot task](assert/simulation.gif)
 
-### minimind-vla 训练
+### minimind-vla Training
 
 ![robot task](assert/loss.png)
 
-## 文件说明
+## File Description
 
-1. **`dataset/vla_dataloader.py`**: VLA 数据集加载器，从 HDF5 文件加载图像、文本和动作数据
-2. **`trainer/post_train_vla.py`**: VLA 模型训练脚本（固定视觉编码器）
-3. **`scripts/collect_franka_hdf5.py`**: 创建示例 HDF5 数据文件的工具脚本，franka 抓取物体
-4. **`test_post_train_vla.py`**: 测试训练流程的脚本
+1. **`dataset/vla_dataloader.py`**: VLA dataset loader that loads image, text, and action data from HDF5 files
+2. **`trainer/post_train_vla.py`**: VLA model training script (with frozen vision encoder)
+3. **`scripts/collect_franka_hdf5.py`**: Tool script for creating example HDF5 data files for Franka robot object grasping
+4. **`test_post_train_vla.py`**: Script for testing the training process
 
-## HDF5 数据格式
+## HDF5 Data Format
 
-HDF5 文件采用episode分组结构，每个episode组包含以下数据集：
+HDF5 files use an episode-based grouping structure. Each episode group contains the following datasets:
 
 ```
 data/
 ├── episode_00000/
-│   ├── rgb: 图像数据，形状为 `(num_frames, 224, 224, 3)`，数据类型为 `uint8`
-│   ├── text: 文本描述，字符串类型
-│   ├── action: 动作数据，形状为 `(num_frames, action_chunk_size, action_dim)`，数据类型为 `float32`
-│   └── robot_state: 机器人状态数据，形状为 `(num_frames, robot_state_dim)`，数据类型为 `float32`
+│   ├── rgb: Image data with shape `(num_frames, 224, 224, 3)`, data type `uint8`
+│   ├── text: Text description, string type
+│   ├── action: Action data with shape `(num_frames, action_chunk_size, action_dim)`, data type `float32`
+│   └── robot_state: Robot state data with shape `(num_frames, robot_state_dim)`, data type `float32`
 ├── episode_00001/
 │   ├── ...
 ```
 
-- **`rgb`**: 每个episode的图像序列
-- **`text`**: 每个episode的文本描述
-- **`action`**: 每个episode的动作序列
-- **`robot_state`**: 每个episode的机器人状态序列（8维：7个机械臂关节角度 + 1个夹爪值）
+- **`rgb`**: Image sequence for each episode
+- **`text`**: Text description for each episode
+- **`action`**: Action sequence for each episode
+- **`robot_state`**: Robot state sequence for each episode (8 dimensions: 7 robot arm joint angles + 1 gripper value)
 
-**注意**：根据之前的修改，数据加载器现在支持从episode组中加载数据，并且必须包含机器人状态信息才能正常训练。
+**Note**: According to previous modifications, the data loader now supports loading data from episode groups, and robot state information is required for normal training.
 
-### 创建示例数据
+### Creating Example Data
 
 ```bash
 python scripts\collect_franka_hdf5.py --gui  --episode 10
 ```
 
-## 训练 VLA 模型
+## Training the VLA Model
 
-### 基本训练命令
+### Basic Training Command
 
 ```
 modelscope download --model openai-mirror/clip-vit-base-patch16 ----local_dir ./model/vision_model/clip-vit-base-patch16
@@ -78,41 +77,38 @@ modelscope download --model openai-mirror/clip-vit-base-patch16 ----local_dir ./
 python trainer/post_train_vla.py --data_path ./dataset/franka_pick_dataset.hdf5 --epochs 20  --batch_size 64  --learning_rate 1e-3  --action_dim 8 --robot_state_dim 8  --action_chunk_size 100 --use_swanlab  --swanlab_project MiniMind-VLA
 ```
 
+### Main Parameter Explanation
 
+#### Basic Parameters
+- `--data_path`: Path to the HDF5 data file
+- `--epochs`: Number of training epochs
+- `--batch_size`: Batch size
+- `--learning_rate`: Learning rate
+- `--device`: Training device (auto-detected by default)
 
-### 主要参数说明
+#### Model Parameters
+- `--hidden_size`: Hidden layer dimension (default 512)
+- `--num_hidden_layers`: Number of hidden layers (default 8)
+- `--max_seq_len`: Maximum sequence length (default 1536)
+- `--use_moe`: Whether to use MoE architecture (0=no, 1=yes)
 
-#### 基本参数
-- `--data_path`: HDF5 数据文件路径
-- `--epochs`: 训练轮数
-- `--batch_size`: 批次大小
-- `--learning_rate`: 学习率
-- `--device`: 训练设备（默认自动检测）
+#### VLA-Specific Parameters
+- `--action_dim`: Action dimension (default 8, e.g., 7DOF arm + gripper)
+- `--action_chunk_size`: Action chunk size (default 100)
+- `--action_hidden_size`: Hidden layer size for the action module (default 256)
+- `--action_loss_weight`: Weight for action loss (default 1.0)
+- `--robot_state_dim`: Robot state dimension (default 8, including 7 robot arm joint angles and 1 gripper value)
 
-#### 模型参数
-- `--hidden_size`: 隐藏层维度（默认 512）
-- `--num_hidden_layers`: 隐藏层数量（默认 8）
-- `--max_seq_len`: 最大序列长度（默认 1536）
-- `--use_moe`: 是否使用 MoE 架构（0=否，1=是）
+#### Training Parameters
+- `--accumulation_steps`: Gradient accumulation steps (default 1)
+- `--grad_clip`: Gradient clipping threshold (default 1.0)
+- `--log_interval`: Logging interval (default 50)
+- `--save_interval`: Model saving interval (default 500)
 
-#### VLA 特定参数
-- `--action_dim`: 动作维度（默认 8，例如：7DOF机械臂 + gripper）
-- `--action_chunk_size`: action chunk 大小（默认 100）
-- `--action_hidden_size`: action 模块隐藏层大小（默认 256）
-- `--action_loss_weight`: action 损失权重（默认 1.0）
-- `--robot_state_dim`: 机器人状态维度（默认 8，包括7个机械臂关节角度和1个夹爪值）
+#### Pre-trained Weights
+- `--from_weight`: Which weight to train based on (default 'pretrain_vlm', set to 'none' to not load weights)
+- `--from_resume`: Whether to automatically detect and resume training (0=no, 1=yes)
 
-#### 训练参数
-- `--accumulation_steps`: 梯度累积步数（默认 1）
-- `--grad_clip`: 梯度裁剪阈值（默认 1.0）
-- `--log_interval`: 日志打印间隔（默认 50）
-- `--save_interval`: 模型保存间隔（默认 500）
-
-#### 预训练权重
-- `--from_weight`: 基于哪个权重训练（默认 'pretrain_vlm'，设置为 'none' 则不加载权重）
-- `--from_resume`: 是否自动检测并续训（0=否，1=是）
-
-#### SwanLab 记录
-- `--use_swanlab`: 启用 SwanLab 记录
-- `--swanlab_project`: SwanLab 项目名（默认 'MiniMind-VLA'）
-
+#### SwanLab Recording
+- `--use_swanlab`: Enable SwanLab recording
+- `--swanlab_project`: SwanLab project name (default 'MiniMind-VLA')
