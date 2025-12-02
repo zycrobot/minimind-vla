@@ -1,6 +1,6 @@
 # VLA 模型训练指南
 
-本指南介绍如何使用 HDF5 数据训练 MiniMind-VLA 模型。
+基于minimind-v实现的机器人具身智能vision languange action模型
 
 ## 文件说明
 
