@@ -2,8 +2,7 @@
 # minimind-VLA
 
 基于minimind-v实现的机器人具身智能vision languange action模型
-action expert 部分实现了三种算法：
-### epsilon-diffusion、v-pred(flow-matching)、[x-pred](https://github.com/LTH14/JiT)
+### action expert 部分集成三种连续动作生成算法：epsilon-diffusion、v-pred(flow-matching)、[x-pred](https://github.com/LTH14/JiT)
 ![robot task](assert/x-pred.png)
 
 ## 三种动作预测模块建模能力对比
