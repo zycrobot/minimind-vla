@@ -68,6 +68,10 @@ python scripts\collect_franka_hdf5.py --gui  --episode 10
 
 ### 基本训练命令
 
+```
+modelscope download --model openai-mirror/clip-vit-base-patch16 ----local_dir ./model/vision_model/clip-vit-base-patch16
+```
+
 ```bash
 python trainer/post_train_vla.py --data_path ./dataset/franka_pick_dataset.hdf5 --epochs 20  --batch_size 64  --learning_rate 1e-3  --action_dim 8 --robot_state_dim 8  --action_chunk_size 100 --use_swanlab  --swanlab_project MiniMind-VLA
 ```
