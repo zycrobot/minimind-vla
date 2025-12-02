@@ -1,5 +1,5 @@
 
-# VLA 模型训练指南
+# minimind-VLA
 
 基于minimind-v实现的机器人具身智能vision languange action模型
 action expert 部分实现了三种算法：
