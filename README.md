@@ -1,3 +1,6 @@
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
 # VLA 模型训练指南
 
 基于minimind-v实现的机器人具身智能vision languange action模型
