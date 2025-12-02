@@ -1,6 +1,33 @@
 # VLA 模型训练指南
 
 基于minimind-v实现的机器人具身智能vision languange action模型
+action expert部分实现了三种算法，$\epsilon$(diffusion)、$v$-pred(flow-matching)、 [$x$-pred](https://github.com/LTH14/JiT)
+
+## 三种动作预测模块建模能力对比
+
+### Moons 数据集对比
+
+以下是在Moons数据集上三种动作预测算法的对比结果：
+
+| $\epsilon$(d=512) | $v$-pred(d=512) | $x$-pred(d=512)  |
+|------------------------|-------------------------|-------------------------|
+| ![Epsilon Prediction](assert/moons_figure2_toy_experiment_D512_epspred.png) | ![v-pred Prediction](assert/moons_figure2_toy_experiment_D512_vpred.png) | ![x-pred Prediction](assert/moons_figure2_toy_experiment_D512_xpred.png) |
+
+### Spiral 数据集对比
+
+以下是在Spiral数据集上三种动作预测算法的对比结果：
+
+| $\epsilon$(d=512) | $v$-pred(d=512) | $x$-pred(d=512)  |
+|-------------------------|-------------------------|-------------------------|
+| ![Epsilon Prediction](assert/spiral_figure2_toy_experiment_D512_epspred.png) | ![v-pred Prediction](assert/spiral_figure2_toy_experiment_D512_vpred.png) | ![x-pred Prediction](assert/spiral_figure2_toy_experiment_D512_xpred.png) |
+
+### 机器人仿真场景
+
+![robot task](assert/simulation.gif)
+
+### minimind-vla 训练
+
+![robot task](assert/loss.png)
 
 ## 文件说明
 
